@@ -1,0 +1,166 @@
+{
+  "info": {
+    "name": "API Reserva de Cubículos - Unicauca",
+    "description": "Colección de pruebas del backend de reserva de cubículos. Cubre 11 endpoints con 17 casos, incluyendo la regla de negocio (409).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "idCubiculo", "value": "6acda9425cb906d055085d6d" },
+    { "key": "idCubiculo2", "value": "6acda9a55cb906d055085d6f" },
+    { "key": "idReserva", "value": "6acdaca05cb906d055085d77" },
+    { "key": "idReserva2", "value": "6acdad645cb906d055085d7e" }
+  ],
+  "item": [
+    {
+      "name": "01 - POST crear cubículo A1",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/cubiculos", "host": ["{{baseUrl}}"], "path": ["cubiculos"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cubículo A1\",\n  \"capacidad\": 6,\n  \"ubicacion\": \"Piso 2 - Ala norte\"\n}" }
+      }
+    },
+    {
+      "name": "02 - POST crear cubículo A2",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/cubiculos", "host": ["{{baseUrl}}"], "path": ["cubiculos"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cubículo A2\",\n  \"capacidad\": 4,\n  \"ubicacion\": \"Piso 2 - Ala sur\"\n}" }
+      }
+    },
+    {
+      "name": "03 - GET listar cubículos",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/cubiculos", "host": ["{{baseUrl}}"], "path": ["cubiculos"] }
+      }
+    },
+    {
+      "name": "04 - GET filtro por capacidad mínima",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/cubiculos?capacidadMin=5",
+          "host": ["{{baseUrl}}"], "path": ["cubiculos"],
+          "query": [{ "key": "capacidadMin", "value": "5" }]
+        }
+      }
+    },
+    {
+      "name": "05 - GET detalle de cubículo A1",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/cubiculos/{{idCubiculo}}", "host": ["{{baseUrl}}"], "path": ["cubiculos", "{{idCubiculo}}"] }
+      }
+    },
+    {
+      "name": "06 - PUT actualizar cubículo A1",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/cubiculos/{{idCubiculo}}", "host": ["{{baseUrl}}"], "path": ["cubiculos", "{{idCubiculo}}"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cubículo A1\",\n  \"capacidad\": 8,\n  \"ubicacion\": \"Piso 2 - Ala norte\"\n}" }
+      }
+    },
+    {
+      "name": "07 - POST crear reserva válida (Ana Pérez)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/reservas", "host": ["{{baseUrl}}"], "path": ["reservas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"cubiculoId\": \"{{idCubiculo}}\",\n  \"nombreEstudiante\": \"Ana Pérez\",\n  \"codigoEstudiante\": \"202312345\",\n  \"fecha\": \"2026-10-15\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:00\"\n}" }
+      }
+    },
+    {
+      "name": "08 - POST regla de negocio 409 (cruce)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/reservas", "host": ["{{baseUrl}}"], "path": ["reservas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"cubiculoId\": \"{{idCubiculo}}\",\n  \"nombreEstudiante\": \"Luis Gómez\",\n  \"codigoEstudiante\": \"202398765\",\n  \"fecha\": \"2026-10-15\",\n  \"horaInicio\": \"09:30\",\n  \"horaFin\": \"11:00\"\n}" }
+      }
+    },
+    {
+      "name": "09 - POST reserva contigua válida (Carlos Ruiz)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/reservas", "host": ["{{baseUrl}}"], "path": ["reservas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"cubiculoId\": \"{{idCubiculo}}\",\n  \"nombreEstudiante\": \"Carlos Ruiz\",\n  \"codigoEstudiante\": \"202311111\",\n  \"fecha\": \"2026-10-15\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"12:00\"\n}" }
+      }
+    },
+    {
+      "name": "10 - GET disponibilidad del cubículo",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/cubiculos/{{idCubiculo}}/disponibilidad?fecha=2026-10-15",
+          "host": ["{{baseUrl}}"], "path": ["cubiculos", "{{idCubiculo}}", "disponibilidad"],
+          "query": [{ "key": "fecha", "value": "2026-10-15" }]
+        }
+      }
+    },
+    {
+      "name": "11 - GET filtrar reservas por cubículo y fecha",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/reservas?cubiculoId={{idCubiculo}}&fecha=2026-10-15",
+          "host": ["{{baseUrl}}"], "path": ["reservas"],
+          "query": [
+            { "key": "cubiculoId", "value": "{{idCubiculo}}" },
+            { "key": "fecha", "value": "2026-10-15" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "12 - GET detalle de reserva (Ana Pérez)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/reservas/{{idReserva}}", "host": ["{{baseUrl}}"], "path": ["reservas", "{{idReserva}}"] }
+      }
+    },
+    {
+      "name": "13 - PUT reprogramar reserva (Ana Pérez)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/reservas/{{idReserva}}", "host": ["{{baseUrl}}"], "path": ["reservas", "{{idReserva}}"] },
+        "body": { "mode": "raw", "raw": "{\n  \"cubiculoId\": \"{{idCubiculo}}\",\n  \"nombreEstudiante\": \"Ana Pérez\",\n  \"codigoEstudiante\": \"202312345\",\n  \"fecha\": \"2026-10-15\",\n  \"horaInicio\": \"13:00\",\n  \"horaFin\": \"15:00\"\n}" }
+      }
+    },
+    {
+      "name": "14 - DELETE cancelar reserva (Carlos Ruiz)",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/reservas/{{idReserva2}}", "host": ["{{baseUrl}}"], "path": ["reservas", "{{idReserva2}}"] }
+      }
+    },
+    {
+      "name": "15 - GET 404 reserva inexistente",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/reservas/000000000000000000000000", "host": ["{{baseUrl}}"], "path": ["reservas", "000000000000000000000000"] }
+      }
+    },
+    {
+      "name": "16 - POST 400 horas inválidas",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/reservas", "host": ["{{baseUrl}}"], "path": ["reservas"] },
+        "body": { "mode": "raw", "raw": "{\n  \"cubiculoId\": \"{{idCubiculo}}\",\n  \"nombreEstudiante\": \"Test\",\n  \"codigoEstudiante\": \"999\",\n  \"fecha\": \"2026-10-20\",\n  \"horaInicio\": \"15:00\",\n  \"horaFin\": \"12:00\"\n}" }
+      }
+    },
+    {
+      "name": "17 - DELETE desactivar cubículo A2",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/cubiculos/{{idCubiculo2}}", "host": ["{{baseUrl}}"], "path": ["cubiculos", "{{idCubiculo2}}"] }
+      }
+    }
+  ]
+}
