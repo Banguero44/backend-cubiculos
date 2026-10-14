@@ -1,5 +1,5 @@
 # Backend - Reserva de cubículos de estudio
-API REST del proyecto individual de desarrollo de aplicaciones móviles.
+API REST
 Contexto: Biblioteca Universidad del Cauca.
 Los estudiantes reservan cubículos de estudio grupal y el sistema impide que dos reservas se crucen.
 
@@ -8,7 +8,7 @@ Node.js + Express + MongoDB (Mongoose) + Thunder Client.
 
 ## Cómo ejecutarlo
 1. `npm install`
-2. Configurar `.env` con `MONGO_URI=mongodb://127.0.0.1:27017/cubiculos_db`
+2. Copiar `.env.example` a `.env` (ajusta `MONGO_URI` si es necesario)
 3. `npm start` → servidor en http://localhost:3000
 
 ## Base de datos
@@ -34,3 +34,11 @@ Node.js + Express + MongoDB (Mongoose) + Thunder Client.
 ## Regla de negocio
 No se permite crear ni reprogramar una reserva si su horario se cruza
 con otra reserva ACTIVA del mismo cubículo en la misma fecha → 409.
+
+## Pruebas
+Importar `coleccion_pruebas.json` en Postman o Insomnia.
+Cubre 11 endpoints con 17 casos, incluyendo la regla de negocio (409).
+
+## Códigos HTTP
+200 OK · 201 Created · 204 No Content · 400 Bad Request ·
+404 Not Found · 409 Conflict · 500 Internal Server Error
