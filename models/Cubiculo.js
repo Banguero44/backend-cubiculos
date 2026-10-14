@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const CubiculoSchema = new mongoose.Schema({
   nombre: { type: String, required: [true, 'El nombre es obligatorio'], trim: true },
-  capacidad: { type: Number, required: [true, 'La capacidad es obligatoria'], min: [1, 'La capacidad debe ser al menos 1'] },
+  capacidad: { type: Number, required: [true, 'La capacidad es obligatoria'], min: [1, 'La capacidad debe ser al menos 1'], validate: { validator: Number.isInteger, message: 'La capacidad debe ser un número entero' } },
   ubicacion: { type: String, required: [true, 'La ubicación es obligatoria'], trim: true },
   activo: { type: Boolean, default: true }
 }, { timestamps: true, collection: 'cubiculos' });

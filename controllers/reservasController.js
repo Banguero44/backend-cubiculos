@@ -57,11 +57,17 @@ exports.actualizar = async (req, res, next) => {
     if (!cubiculoId || !nombreEstudiante || !codigoEstudiante || !fecha || !horaInicio || !horaFin) {
       return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
+    if (!esFechaValida(fecha)) {
+      return res.status(400).json({ error: 'Formato de fecha: YYYY-MM-DD' });
+    }
     const errorHoras = validarHoras(horaInicio, horaFin);
     if (errorHoras) return res.status(400).json({ error: errorHoras });
 
     const reserva = await Reserva.findById(req.params.id);
     if (!reserva) return res.status(404).json({ error: 'Reserva no encontrada' });
+    if (reserva.estado === 'CANCELADA') {
+      return res.status(409).json({ error: 'No se puede modificar una reserva cancelada' });
+    }
 
     const cub = await Cubiculo.findById(cubiculoId);
     if (!cub) return res.status(404).json({ error: 'Cubículo no encontrado' });

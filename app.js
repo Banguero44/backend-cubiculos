@@ -17,6 +17,9 @@ app.use((req, res) => {
 });
 
 app.use((error, req, res, next) => {
+  if (error.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'El cuerpo de la petición no es un JSON válido' });
+  }
   console.error('Error:', error.message);
   if (error.name === 'ValidationError') {
     const mensajes = Object.values(error.errors).map(e => e.message);
