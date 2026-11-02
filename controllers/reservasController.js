@@ -5,7 +5,8 @@ const { esFechaValida, validarHoras, haySolapamiento } = require('../validacione
 exports.listar = async (req, res, next) => {
   try {
     const filtro = {};
-    if (req.query.cubiculoId) filtro.cubiculo = req.query.cubiculoId;
+    const cubiculoId = req.query.cubiculoId || req.query.cubiculo_id; // acepta los dos nombres (el diseño usa cubiculo_id)
+    if (cubiculoId) filtro.cubiculo = cubiculoId;
     if (req.query.fecha) filtro.fecha = req.query.fecha;
     if (req.query.estado) filtro.estado = req.query.estado.toUpperCase();
     const reservas = await Reserva.find(filtro)
